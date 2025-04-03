@@ -21,7 +21,7 @@ This n8n workflow automates sending personalized reminder emails via Gmail, base
 ### 2. Google Sheets
 - **Node**: `Google Sheets`
 - Fetches data from the following sheet:
-  - [Automation Mail Details](https://docs.google.com/spreadsheets/d/1_gAyjYiEf7K-SBTLT8NRLxdfkaaPZLb6h-iJw89YeGo/edit?usp=drivesdk)
+  - Automation Mail Details
   - Sheet name: `Sheet1`
 - Retrieves values like `Name` and `Mail IDs`.
 
