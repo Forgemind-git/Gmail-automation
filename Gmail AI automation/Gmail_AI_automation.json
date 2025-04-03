@@ -1,0 +1,237 @@
+{
+  "name": "Gmail AI automation",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1020,
+        -460
+      ],
+      "id": "c5c7369e-fbed-4ded-a7f4-36f5539f2927",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1yrR0zPs1xcFPuVxbbyOE_-wWvYXR6X-0dsPWmaUI32A",
+          "mode": "list",
+          "cachedResultName": "Ai agent Mail details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1yrR0zPs1xcFPuVxbbyOE_-wWvYXR6X-0dsPWmaUI32A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1yrR0zPs1xcFPuVxbbyOE_-wWvYXR6X-0dsPWmaUI32A/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -800,
+        -460
+      ],
+      "id": "3e649bcc-1710-4906-ae73-cea02828ef33",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cXlNqv7wXjGnKVzO",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Google Sheets').item.json[\"Mail IDs\"] }}",
+        "subject": "Quick Reminder: Take a Moment for Digital Declutter",
+        "message": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -200,
+        -460
+      ],
+      "id": "edff743d-31c5-4027-86c3-53dbd881aeb8",
+      "name": "Gmail",
+      "webhookId": "eada6282-746f-4232-ad7c-aaf9f5c14666",
+      "executeOnce": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1NZZVRZOyFOQgo6v",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=To name: {{ $json.Name }}\nPersonality: {{ $json.Personality }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Generate a professional yet friendly email body without subject. The tone and style of the email should reflect the personality type. The content should be on \"Take a Moment for Digital Declutter\". Create a short mail content with 90-100 words.\n\nThe mail is addressed to \"To name\".\n\nSign the mail as Forgemind AI\n\nSample output:\n<text>"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        -580,
+        -460
+      ],
+      "id": "018bc938-1ebd-4064-8d4f-e64e657d9316",
+      "name": "Basic LLM Chain",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -540,
+        -260
+      ],
+      "id": "c179eba6-b928-47fb-8b36-1a1c24bf0970",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6YNNgI5YlBrHqCwf",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1yrR0zPs1xcFPuVxbbyOE_-wWvYXR6X-0dsPWmaUI32A",
+          "mode": "list",
+          "cachedResultName": "Ai agent Mail details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1yrR0zPs1xcFPuVxbbyOE_-wWvYXR6X-0dsPWmaUI32A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1yrR0zPs1xcFPuVxbbyOE_-wWvYXR6X-0dsPWmaUI32A/edit#gid=0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -920,
+        -220
+      ],
+      "id": "bfeca949-1814-41f8-a5ae-cfce782946f1",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "k8HD5DAg0FmSJAS8",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Sheets Trigger",
+        "height": 220
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -980,
+        -280
+      ],
+      "typeVersion": 1,
+      "id": "33eec56e-4db4-465e-a8e9-df5e378b9b97",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b923463d-2454-41f7-90cb-22f7c74d7073",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "030862b1dcaff3ff9cb8f16544487a6b16cf430e1deb04f332ab7722f5f563bd"
+  },
+  "id": "NhTzgfAaa5HERNmR",
+  "tags": [
+    {
+      "createdAt": "2025-03-19T18:28:36.886Z",
+      "updatedAt": "2025-03-19T18:28:36.886Z",
+      "id": "xWn1tSWkEl41XVhY",
+      "name": "For Video"
+    }
+  ]
+}
