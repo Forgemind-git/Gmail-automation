@@ -1,0 +1,174 @@
+{
+  "name": "Gmail automation",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -140
+      ],
+      "id": "205591e8-b943-4080-8f24-6c87a0878fb9",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1_gAyjYiEf7K-SBTLT8NRLxdfkaaPZLb6h-iJw89YeGo",
+          "mode": "list",
+          "cachedResultName": "Automation Mail details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_gAyjYiEf7K-SBTLT8NRLxdfkaaPZLb6h-iJw89YeGo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_gAyjYiEf7K-SBTLT8NRLxdfkaaPZLb6h-iJw89YeGo/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -220,
+        -140
+      ],
+      "id": "1e418433-d6cd-498f-83a5-20cd6075dd84",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cXlNqv7wXjGnKVzO",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['Mail IDs'] }}",
+        "subject": "Quick Reminder: Take a Moment for Digital Declutter",
+        "emailType": "text",
+        "message": "=Hi {{ $json.Name }},\n\nJust a friendly reminder to take a few minutes today to do a quick digital declutter!\nClearing out old emails, organizing files, and updating passwords can make a big difference in productivity and peace of mind.\n\nHere are a few simple steps to consider:\nArchive or delete emails you no longer need\nUnsubscribe from newsletters you don’t read\nOrganize files into folders for quick access\nClear out your downloads folder\nUpdate passwords if it’s been a while\n\nIt doesn’t have to be perfect—just a small effort today can make tomorrow smoother.\n\nFeel free to forward this reminder to your team, friends, or anyone who might find it helpful!\n\nStay organized,\nForgemind Automation",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -140
+      ],
+      "id": "16069787-7fc8-4899-911a-5b25ca69441b",
+      "name": "Gmail",
+      "webhookId": "eada6282-746f-4232-ad7c-aaf9f5c14666",
+      "executeOnce": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1NZZVRZOyFOQgo6v",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1_gAyjYiEf7K-SBTLT8NRLxdfkaaPZLb6h-iJw89YeGo",
+          "mode": "list",
+          "cachedResultName": "Automation Mail details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_gAyjYiEf7K-SBTLT8NRLxdfkaaPZLb6h-iJw89YeGo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_gAyjYiEf7K-SBTLT8NRLxdfkaaPZLb6h-iJw89YeGo/edit#gid=0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        120
+      ],
+      "id": "8f9f54ab-c5d3-4ded-ae88-13c866530ec3",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "k8HD5DAg0FmSJAS8",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Sheets Trigger",
+        "height": 220
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        60
+      ],
+      "typeVersion": 1,
+      "id": "3f3c6e95-5130-4ec5-8533-0858b9761148",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "84546fc5-4310-4be4-b7db-a85f0d9d179a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "030862b1dcaff3ff9cb8f16544487a6b16cf430e1deb04f332ab7722f5f563bd"
+  },
+  "id": "tFaZlCytxLRqxHlx",
+  "tags": [
+    {
+      "createdAt": "2025-03-19T18:28:36.886Z",
+      "updatedAt": "2025-03-19T18:28:36.886Z",
+      "id": "xWn1tSWkEl41XVhY",
+      "name": "For Video"
+    }
+  ]
+}
